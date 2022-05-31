@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<a href="{% url 'meeting-list' %}">Ver todos los meetings</a>
+<h3>Recomendado para ti: </h3>
+<ul>
+{% for meeting in meetings %}
+    <li><a href="{% url 'meeting-detail' meeting.id %}">{{meeting.titulo}}</a></li>
+{% endfor %}
+</ul>    
+
+    
+
+
+{% endblock content %}
+    

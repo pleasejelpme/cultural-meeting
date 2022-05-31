@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{{meeting.titulo}}</h2>
+<h5>Descripcion: </h5>{{meeting.descripcion}}
+<h5>Organizador: </h5>{{meeting.host}}
+<h5>Ciudad:</h5>{{meeting.ciudad}}
+<h5></h5>{{meeting.direccion}}
+{% endblock content %}
+    
