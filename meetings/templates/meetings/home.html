@@ -2,14 +2,24 @@
 
 {% block content %}
 
-
-<a href="{% url 'meeting-list' %}">Ver todos los meetings</a>
+{% if request.user.is_authenticated %}
+<a href="{% url 'meeting-list' %}"><button>Ver todos los meetings</button></a>
+<a href="{% url 'meeting-create' %}"><button>Crear un meet</button></a>
+<a href="{% url 'perfil-detail' request.user.id%}"><button>Perfil</button></a>
 <h3>Recomendado para ti: </h3>
 <ul>
 {% for meeting in meetings %}
     <li><a href="{% url 'meeting-detail' meeting.id %}">{{meeting.titulo}}</a></li>
 {% endfor %}
-</ul>    
+</ul>
+
+{% else %}
+
+<a href="{% url 'register' %}">Registrarse</a>
+<a href="{% url 'login' %}">Login</a>
+
+{% endif %}
+
 
     
 

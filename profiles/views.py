@@ -13,7 +13,6 @@ class PerfilCreateView(CreateView):
     model = Perfil
     form_class = RegisterForm
     template_name = "profiles/register.html"
-    success_url = reverse_lazy('home')
     redirect_authenticated_user = True
 
     def form_valid(self, form):
@@ -25,18 +24,17 @@ class PerfilCreateView(CreateView):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super(PerfilCreateView, self).get(*args, **kwargs)
+        return super(PerfilCreateView, self).get(request, *args, **kwargs)
 
 class PerfilLoginView(LoginView):
     template_name= 'profiles/login.html'
-    success_url = reverse_lazy('home')
     fields = '__all__'
     redirect_authenticated_user = True
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super(PerfilLoginView, self).get(*args, **kwargs)
+        return super(PerfilLoginView, self).get(request, *args, **kwargs)
 
 class PerfilDetailView(DetailView):
     model = Perfil
