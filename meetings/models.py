@@ -37,8 +37,8 @@ class Meeting(models.Model):
     def __str__(self):
         return self.titulo
     
-    def get_absolute_url(self):
-        return reverse('meetings:meeting-detail', kwargs={'pk': self.pk})
+    # def get_absolute_url(self):
+    #     return reverse('meetings:meeting-detail', kwargs={'pk': self.pk})
 
 class Comentario(models.Model):
     meeting     = models.ForeignKey(Meeting, on_delete=models.CASCADE)
