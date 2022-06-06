@@ -1,8 +1,7 @@
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 
 from .models import Perfil
@@ -35,6 +34,12 @@ class PerfilLoginView(LoginView):
         if request.user.is_authenticated:
             return redirect('home')
         return super(PerfilLoginView, self).get(request, *args, **kwargs)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('meeting-list')
+
 
 class PerfilDetailView(DetailView):
     model = Perfil

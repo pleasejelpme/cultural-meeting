@@ -1,27 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-{% if request.user.is_authenticated %}
-<a href="{% url 'meeting-list' %}"><button>Ver todos los meetings</button></a>
-<a href="{% url 'meeting-create' %}"><button>Crear un meet</button></a>
-<a href="{% url 'perfil-detail' request.user.id%}"><button>Perfil</button></a>
-<h3>Recomendado para ti: </h3>
-<ul>
-{% for meeting in meetings %}
-    <li><a href="{% url 'meeting-detail' meeting.id %}">{{meeting.titulo}}</a></li>
-{% endfor %}
-</ul>
-
-{% else %}
-
-<a href="{% url 'register' %}">Registrarse</a>
-<a href="{% url 'login' %}">Login</a>
-
-{% endif %}
-
-
-    
+<div>
+    <h3>Categorias</h3>
+    <hr>
+    {% for categoria in categorias %}
+    <div>
+        <a href="{% url 'home' %}?q={{categoria.categoria}}">{{categoria}}</a>
+    </div>
+    {% endfor %}
+</div>
+<div>
+    <h3>{{meetings_count}} meets cerca de ti </h3>
+    <ul>
+    {% for meeting in meetings %}
+        <li><a href="{% url 'meeting-detail' meeting.id %}">{{meeting.titulo}}</a></li>
+    {% endfor %}
+    </ul>
+</div>
 
 
 {% endblock content %}

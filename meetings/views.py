@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import DetailView, ListView, View
+from django.db.models import Q
 
 from profiles.models import Perfil
 from .models import Categoria, Meeting
@@ -48,6 +49,26 @@ class MeetingsListView(ListView):
     model = Meeting
     template_name = 'meetings/list.html'
     context_object_name = 'meetings'
+
+
+def home_view(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+
+    categorias = Categoria.objects.all()
+    meetings = Meeting.objects.filter(
+        Q(categoria__categoria__icontains = q) |
+        Q(titulo__icontains = q)
+    )
+    
+    meeetings_count = meetings.count()
+
+    context = {
+        'categorias':categorias,
+        'meetings':meetings,
+        'meetings_count':meeetings_count
+    }
+
+    return render(request, 'meetings/home.html', context)
 
 
 

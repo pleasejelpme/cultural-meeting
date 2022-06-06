@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div>
 <h2>{{meeting.titulo}}</h2>
 <h5>Descripcion: </h5>{{meeting.descripcion}}
 <h5>Organizador: </h5>{{meeting.host}}
@@ -19,7 +19,7 @@
     {% csrf_token %}
     <input type="submit" value="Unirse">
 </form>
-
+</div>
 
 {% endblock content %}
     
