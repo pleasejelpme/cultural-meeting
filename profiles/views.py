@@ -38,7 +38,7 @@ class PerfilLoginView(LoginView):
 
 def logout_user(request):
     logout(request)
-    return redirect('meeting-list')
+    return redirect('login')
 
 
 class PerfilDetailView(DetailView):

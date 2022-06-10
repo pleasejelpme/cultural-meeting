@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <p>Estas seguro que quieres eliminar "<strong>{{ comentario }}</strong>"</p>
+        <button type="submit">Eliminar</button>
+    </form>
+</div>  
+{% endblock content %}

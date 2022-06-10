@@ -1,6 +1,9 @@
+from datetime import datetime
 from django.db import models
+import pytz
 from profiles.models import Perfil
 from django.urls import reverse
+
 
 class Ciudad(models.Model):
     ciudad      = models.CharField(max_length=50)
@@ -39,10 +42,14 @@ class Meeting(models.Model):
     
     # def get_absolute_url(self):
     #     return reverse('meetings:meeting-detail', kwargs={'pk': self.pk})
+        
 
 class Comentario(models.Model):
     meeting     = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     usuario     = models.ForeignKey(Perfil, on_delete=models.CASCADE)
     comentario  = models.TextField()
     creado      = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.comentario
 

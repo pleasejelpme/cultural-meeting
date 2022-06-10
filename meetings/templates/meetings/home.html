@@ -1,24 +1,45 @@
 {% extends "base.html" %}
 
+
+
 {% block content %}
-<div>
-    <h3>Categorias</h3>
-    <hr>
-    {% for categoria in categorias %}
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr 1fr;
+    }
+</style>
+
+<div class="home-container">
     <div>
-        <a href="{% url 'home' %}?q={{categoria.categoria}}">{{categoria}}</a>
+        <h3>Categorias</h3>
+        <hr>
+
+        <div>
+            <a href="{% url 'home' %}?q=">Todos</a>
+        </div>
+    {% for categoria in categorias %}    
+        <div >
+            <a href="{% url 'home' %}?q={{categoria.categoria}}">{{categoria}}</a>
+        </div>
+    {% endfor %}
     </div>
-    {% endfor %}
-</div>
-<div>
-    <h3>{{meetings_count}} meets cerca de ti </h3>
-    <ul>
-    {% for meeting in meetings %}
-        <li><a href="{% url 'meeting-detail' meeting.id %}">{{meeting.titulo}}</a></li>
-    {% endfor %}
-    </ul>
-</div>
 
+    <div>
+        <h3>{{meetings_count}} meets cerca de ti </h3>
+        <ul>
+        {% for meeting in meetings %}
+            <li><a href="{% url 'meeting-detail' meeting.id %}">{{meeting.titulo}}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
 
+    <div>
+        <h3>Meetings recomendados para ti: </h3>
+        {% for meeting in meetings_personalizados %}
+        <div>{{meeting}}</div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock content %}
     

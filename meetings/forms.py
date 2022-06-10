@@ -1,5 +1,5 @@
 from django import forms
-from .models import Meeting
+from .models import Meeting, Comentario
 import datetime
 import pytz
 
@@ -33,6 +33,12 @@ class MeetingForm(forms.ModelForm):
             
         return super(MeetingForm, self).clean()
     
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = (
+            'comentario',
+        )
     
     
 

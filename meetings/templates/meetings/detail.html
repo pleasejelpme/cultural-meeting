@@ -2,23 +2,49 @@
 
 {% block content %}
 <div>
-<h2>{{meeting.titulo}}</h2>
-<h5>Descripcion: </h5>{{meeting.descripcion}}
-<h5>Organizador: </h5>{{meeting.host}}
-<h5>Ciudad:</h5>{{meeting.ciudad}}
-{{meeting.direccion}}
-<br>
-<h5>Asistentes: </h5>
-{% for asistente in asistentes %}
-    {{asistente.username}}<br>
-{% endfor %}
+    <h2>{{meeting.titulo}}</h2>
+    <h5>Descripcion: </h5>{{meeting.descripcion}}
+    <h5>Organizador: </h5>{{meeting.host}}
+    <h5>Ciudad:</h5>{{meeting.ciudad}}
+    {{meeting.direccion}}
+    <br>
+    <h5>Asistentes: </h5>
+    {% for asistente in asistentes %}
+        @{{asistente.username}} |
+    {% endfor %}
+    <br><br>
 
-<hr>
+    
+    {% if request.user.is_authenticated%}
+        {% if request.user not in asistentes %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Unirse" name="unirse">
+        </form>
+        <hr>
+        {% endif %}
+            
 
-<form action="" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="Unirse">
-</form>
+
+    <div>
+        <h3>Comentarios: </h3>
+        {% for comentario in comentarios %}
+            <div>
+                <small>@{{comentario.usuario}} {{comentario.creado|timesince}}</small>
+                {% if request.user == comentario.usuario %}
+                    <a href="{% url 'comentario-delete' comentario.id %}">Eliminar</a>
+                {% endif %}
+                <p>{{comentario.comentario}}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Comentar..." name="comentar">
+    </form>
+    {% endif %}
 </div>
 
 {% endblock content %}
