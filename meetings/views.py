@@ -15,22 +15,21 @@ def meeting_detail_view(request, pk):
     asistentes = meeting.asistentes.all
     comentarios = meeting.comentario_set.all()
 
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            if 'unirse' in request.POST:
-                for asistente in meeting.asistentes.all():
-                    if request.user == asistente:
-                        raise ValueError('Ya te has unido a este meeting')
-                meeting.asistentes.add(request.user)
-                return redirect('meeting-detail', pk)
+    if request.user.is_authenticated and request.method == 'POST':
+        if 'unirse' in request.POST:
+            for asistente in meeting.asistentes.all():
+                if request.user == asistente:
+                    raise ValueError('Ya te has unido a este meeting')
+            meeting.asistentes.add(request.user)
+            return redirect('meeting-detail', pk)
         
-            if 'comentar' in request.POST:
-                Comentario.objects.create(
-                    usuario = request.user,
-                    meeting = meeting,
-                    comentario = request.POST.get('comentar')
-                )
-                return redirect('meeting-detail', pk)
+        if 'comentar' in request.POST:
+            Comentario.objects.create(
+                usuario = request.user,
+                meeting = meeting,
+                comentario = request.POST.get('comentar')
+            )
+            return redirect('meeting-detail', pk)
 
     context = {
         'meeting':meeting,
