@@ -1,8 +1,5 @@
-from datetime import datetime
 from django.db import models
-import pytz
 from profiles.models import Perfil
-from django.urls import reverse
 
 
 class Ciudad(models.Model):

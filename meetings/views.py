@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView, View
 from django.db.models import Q
+from django.contrib import messages
 
 from .models import Categoria, Meeting, Comentario
 from .forms import MeetingForm
@@ -29,6 +29,7 @@ def meeting_detail_view(request, pk):
                 meeting = meeting,
                 comentario = request.POST.get('comentar')
             )
+            messages.success(request, 'Comentario publicado!')
             return redirect('meeting-detail', pk)
 
     context = {
@@ -37,39 +38,48 @@ def meeting_detail_view(request, pk):
         'comentarios':comentarios
         }
 
-    return render(request, 'meetings/detail.html', context)
+    return render(request, 'detail.html', context)
 
 
 
 class ComentarioDeleteView(DeleteView):
     model = Comentario
-    template_name = "meetings/delete.html"
+    template_name = "delete.html"
     context_object_name = 'comentario'
     success_url = reverse_lazy('home')
     
     def get(self, request, pk, *args, **kwargs):
         comentario = Comentario.objects.get(id=pk)
         if request.user != comentario.usuario:
+            messages.error(request, 'No autorizado')
             return redirect('home')
         return super(ComentarioDeleteView, self).get(request, pk, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        messages.success(request, 'Comentario eliminado')
+        return super().post(request, *args, **kwargs)
 
 
 class MeetingCreateView(LoginRequiredMixin, CreateView):
     login_url = 'login'
     model = Meeting
     form_class = MeetingForm
-    template_name = 'meetings/create.html'
+    template_name = 'create.html'
 
     def form_valid(self, form):
         form.instance.host = self.request.user
         self.object = form.save()
         self.object.asistentes.add(self.request.user)
         return redirect('home')
+    
+    def post(self, request, *args, **kwargs):
+        messages.success(request, 'Meeting creado!')
+        return super(MeetingCreateView, self).post(request, *args, **kwargs)
 
 
 class MeetingsListView(ListView):
     model = Meeting
-    template_name = 'meetings/list.html'
+    template_name = 'list.html'
     context_object_name = 'meetings'
 
 
@@ -96,12 +106,12 @@ def home_view(request):
         'meetings_personalizados':meetings_personalizados,
     }
 
-    return render(request, 'meetings/home.html', context)
+    return render(request, 'home.html', context)
 
 
 class PreferencesBasedListView(LoginRequiredMixin, ListView):
     model = Meeting
-    template_name = 'meetings/home.html'
+    template_name = 'home.html'
     context_object_name = 'meetings'
     login_url = 'login'
 

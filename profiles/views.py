@@ -11,7 +11,7 @@ from .forms import RegisterForm
 class PerfilCreateView(CreateView):
     model = Perfil
     form_class = RegisterForm
-    template_name = "profiles/register.html"
+    template_name = "register.html"
     redirect_authenticated_user = True
 
     def form_valid(self, form):
@@ -26,7 +26,7 @@ class PerfilCreateView(CreateView):
         return super(PerfilCreateView, self).get(request, *args, **kwargs)
 
 class PerfilLoginView(LoginView):
-    template_name= 'profiles/login.html'
+    template_name= 'login.html'
     fields = '__all__'
     redirect_authenticated_user = True
 
@@ -44,4 +44,4 @@ def logout_user(request):
 class PerfilDetailView(DetailView):
     model = Perfil
     context_object_name = 'user'
-    template_name = 'profiles/perfil_detail.html'
+    template_name = 'perfil_detail.html'
