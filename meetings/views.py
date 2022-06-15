@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic import DetailView, ListView, View
+from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic import ListView
 from django.db.models import Q
 from django.contrib import messages
+import datetime
 
 from .models import Categoria, Meeting, Comentario
 from .forms import MeetingForm
 
+
+now = datetime.date.today()
 
 def meeting_detail_view(request, pk):
     meeting = Meeting.objects.get(id=pk)
@@ -93,8 +96,11 @@ def home_view(request):
 
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     meetings = Meeting.objects.filter(
-        Q(categoria__categoria__icontains = q) |
-        Q(titulo__icontains = q)
+        Q(cierre__gte = now) &
+        Q(      
+            Q(categoria__categoria__icontains = q) |
+            Q(titulo__icontains = q)
+        )
     )
     
     meeetings_count = meetings.count()
