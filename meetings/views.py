@@ -89,7 +89,7 @@ class MeetingsListView(ListView):
 def home_view(request):    
     categorias = Categoria.objects.all()
     user = request.user
-    meetings_personalizados = Meeting.objects.all().filter(
+    meetings_personalizados = Meeting.objects.filter(
         Q(ciudad = user.ciudad_origen) &
         Q(categoria__in = user.intereses.all())
     ).order_by('-comienzo')
@@ -124,7 +124,8 @@ class PreferencesBasedListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = self.request.user
         queryset = Meeting.objects.all().filter(
-            categoria__in = user.intereses.all()
+            Q(categoria__in = user.intereses.all()) &
+            Q(cierre__gte = now)
         )
         return queryset
 
